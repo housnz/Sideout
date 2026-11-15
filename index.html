@@ -4305,6 +4305,8 @@ let WARN = null; // Karte im Draft, die auf eine falsche Position käme und erst
 const QUICK_EASY = { runs: 3, target: 70, dz: -.3 };
 // Tages-Draft: Am selben Tag (UTC) bekommen alle dieselben Karten und Gegner, und gleiche Entscheidungen geben denselben Spielverlauf.
 // Dafür läuft der Zufall in einem Tages-Run über einen festen Startwert (G.daily = Datum).
+// Adresse der öffentlichen Seite, steht im Teilen-Bild und im Teilen-Text (nur in der öffentlichen Fassung)
+const SITE = PUB ? 'housnz.github.io/Sideout' : '';
 const today = () => new Date().toISOString().slice(0, 10);
 function seededRun(key, fn) { const o = Math.random; Math.random = seeded(key); try { return fn(); } finally { Math.random = o; } }
 const dayRun = (key, fn) => (G && G.daily ? seededRun(G.daily + '|' + key, fn) : fn());
@@ -4553,7 +4555,7 @@ function dailyAct() {
   if (G && !G.over && G.mode !== 'career' && !confirm(T('Ein laufender Run geht dabei verloren. Fortfahren?'))) return;
   newRun('quick', 0, today());
 }
-const dailyText = dl => `SIDEOUT ${T('Tages-Draft')} ${fmtDate(Date.parse(dl.d))}\n${[0, 1, 2].map(i => (i < dl.res.length ? (dl.res[i] ? '🟩' : '🟥') : '⬜')).join('')} ${dailyLabel(dl)} · ${T('Team')} ${dl.ovr}`;
+const dailyText = dl => `SIDEOUT ${T('Tages-Draft')} ${fmtDate(Date.parse(dl.d))}\n${[0, 1, 2].map(i => (i < dl.res.length ? (dl.res[i] ? '🟩' : '🟥') : '⬜')).join('')} ${dailyLabel(dl)} · ${T('Team')} ${dl.ovr}${SITE ? '\nhttps://' + SITE + '/' : ''}`;
 function rDaily() {
   const dl = P.daily;
   if (!dl || dl.st !== 'done') { V = 'home'; return rHome(); }
@@ -4588,7 +4590,7 @@ function dailyCanvas(dl) {
     txt(p.f, 800, y + 56, '52px sans-serif', '#fff');
     txt(String(p.ovr), W - 100, y + 58, F(800, 58), '#eef2ff', 'right');
   });
-  txt('VOLLEYBALL DRAFT', W / 2, 1310, F(700, 36), '#8f9bc9', 'center');
+  txt(SITE || 'VOLLEYBALL DRAFT', W / 2, 1310, F(700, 38), SITE ? '#eef2ff' : '#8f9bc9', 'center');
   return cv;
 }
 function dailyShare(copy) {

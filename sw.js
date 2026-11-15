@@ -1,6 +1,6 @@
 // SIDEOUT – Offline-Betrieb. Wird von tools/build_pages.rb nach pages/sw.js kopiert, @@CACHE@@ wird dabei
 // durch einen Wert aus dem Inhalt ersetzt. Ändert sich das Spiel, ändert sich der Name, und der alte Speicher wird gelöscht.
-const CACHE = 'sideout-d44519cb52';
+const CACHE = 'sideout-62a695d999';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'fonts/barlow-400-latin-ext.woff2', 'fonts/barlow-400-latin.woff2', 'fonts/barlow-600-latin-ext.woff2', 'fonts/barlow-600-latin.woff2', 'fonts/barlow-condensed-500-latin-ext.woff2', 'fonts/barlow-condensed-500-latin.woff2', 'fonts/barlow-condensed-700-latin-ext.woff2', 'fonts/barlow-condensed-700-latin.woff2', 'fonts/barlow-condensed-800-latin-ext.woff2', 'fonts/barlow-condensed-800-latin.woff2'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
