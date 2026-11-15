@@ -383,19 +383,23 @@ button[data-hk]::before{top:-7px;left:-7px}
 .lvl.locked{opacity:.45;cursor:default}
 .lvl.locked:hover{transform:none;border-color:var(--line)}
 .nav .gear{font-size:18px;padding:4px 12px;line-height:1.2}
-/* Match: Spielfeld mit Ballweg und Satz-Taktik */
-.mcourt{position:relative;max-width:420px;margin:10px auto 0;border:2px solid #fff8;border-radius:10px;padding:6px;background:repeating-linear-gradient(90deg,var(--court) 0 46px,var(--court2) 46px 48px);transition:border-color .2s}
-.mcourt:empty{display:none}
-.mcourt.wa{border-color:var(--lime);box-shadow:0 0 12px #c6ff3d88}
-.mcourt.wb{border-color:var(--elite);box-shadow:0 0 12px #ff5f7e88}
-.mhalf{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.mnet{height:6px;margin:5px -6px;background:repeating-linear-gradient(90deg,#fff 0 5px,#111 5px 10px)}
-.mc{background:#0a0f1fb3;border:1px solid transparent;border-radius:6px;padding:3px 4px;font:700 13px 'Barlow Condensed';letter-spacing:.03em;text-transform:uppercase;color:#fff;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mhalf.opp .mc{background:#3a0f1fcc}
-.mc.lib{color:var(--legend)}
-.mc.srv{border-color:#fff8}
-.mc.on{border-color:#fff;background:#000}
-.mball{position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 2px #000;transition:left .16s linear,top .16s linear;pointer-events:none}
+/* Match: Höhepunkte mit Spielerkarte und Satz-Taktik */
+.hl{display:flex;gap:14px;align-items:center;justify-content:center;max-width:440px;min-height:250px;margin:12px auto 0;padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:#0006;opacity:.35;transition:opacity .35s,border-color .2s,box-shadow .2s}
+.hl[hidden]{display:none}
+.hl.show{opacity:1}
+.hl.a.show{border-color:var(--lime);box-shadow:0 0 22px #c6ff3d55}
+.hl.b.show{border-color:var(--elite);box-shadow:0 0 22px #ff5f7e55}
+.hl .card{--fs:12.5px;cursor:default;animation:hlpop .4s both}
+.hl .card:hover{transform:none}
+.hl .hw{display:flex;flex-direction:column;gap:6px;text-align:left;min-width:0;flex:1}
+.hl .hw b{font:800 36px/1 'Barlow Condensed';letter-spacing:.03em;text-transform:uppercase;animation:hlword .4s both}
+.hl .hw b.sm{font-size:25px}
+.hl .hw b{overflow-wrap:anywhere}
+.hl.a .hw b{color:var(--lime)} .hl.b .hw b{color:var(--elite)}
+.hl .hw span{font-size:15px;line-height:1.3;color:var(--text)}
+.hl .hw i{font:700 22px 'Barlow Condensed';font-style:normal;color:var(--mute)}
+@keyframes hlpop{from{transform:scale(.55) rotate(-8deg);opacity:0}60%{transform:scale(1.08) rotate(1deg)}}
+@keyframes hlword{from{transform:translateX(24px);opacity:0}}
 .focus{margin:12px 0;text-align:center}
 .log:empty{display:none}
 .focus h3{font-size:24px;color:var(--lime)}
@@ -464,6 +468,7 @@ button[data-hk]::before{top:-7px;left:-7px}
       <h3 data-t="Einstellungen"></h3>
       <label class="row col"><span data-t="Sprache"></span><select id="lang"></select></label>
       <label class="row"><input type="checkbox" id="mus"><span data-t="Hintergrundmusik"></span></label>
+      <label class="row"><input type="checkbox" id="sfx"><span data-t="Soundeffekte"></span></label>
       <label class="row col"><span><span data-t="Lautstärke"></span> <b id="volv">20 %</b></span><input type="range" id="vol" min="0" max="100" step="1"></label>
       <button class="btn ghost sm" data-act="savedlg" style="margin:4px 0 8px" data-t="Spielstand sichern / laden"></button>
       <p class="note"><b data-t="Tasten:"></b> <span data-t="1–9 Auswahl · Enter Hauptknopf · R neu würfeln · T Tempo · S überspringen · M Musik · Esc schließen"></span></p>
@@ -902,7 +907,12 @@ I18N.en = {
   "Bild teilen": "Share image",
   "Text kopieren": "Copy text",
   "Morgen gibt es neue Karten.": "New cards tomorrow.",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Sharing does not work directly here. Press and hold the image to save it, or take a screenshot."
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Sharing does not work directly here. Press and hold the image to save it, or take a screenshot.",
+  "ASS!": "ACE!",
+  "BLOCK!": "BLOCK!",
+  "WAS FÜR EIN BALLWECHSEL!": "WHAT A RALLY!",
+  "PUNKT!": "POINT!",
+  "Soundeffekte": "Sound effects"
 };
 
 </script>
@@ -1286,7 +1296,12 @@ I18N.pl = {
   "Bild teilen": "Udostępnij obraz",
   "Text kopieren": "Kopiuj tekst",
   "Morgen gibt es neue Karten.": "Jutro nowe karty.",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Udostępnianie nie działa tu bezpośrednio. Przytrzymaj obraz, aby go zapisać, albo zrób zrzut ekranu."
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Udostępnianie nie działa tu bezpośrednio. Przytrzymaj obraz, aby go zapisać, albo zrób zrzut ekranu.",
+  "ASS!": "AS!",
+  "BLOCK!": "BLOK!",
+  "WAS FÜR EIN BALLWECHSEL!": "CO ZA WYMIANA!",
+  "PUNKT!": "PUNKT!",
+  "Soundeffekte": "Efekty dźwiękowe"
 };
 
 </script>
@@ -1670,7 +1685,12 @@ I18N.it = {
   "Bild teilen": "Condividi immagine",
   "Text kopieren": "Copia testo",
   "Morgen gibt es neue Karten.": "Domani nuove carte.",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Qui la condivisione diretta non funziona. Tieni premuta l'immagine per salvarla, oppure fai uno screenshot."
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Qui la condivisione diretta non funziona. Tieni premuta l'immagine per salvarla, oppure fai uno screenshot.",
+  "ASS!": "ACE!",
+  "BLOCK!": "MURO!",
+  "WAS FÜR EIN BALLWECHSEL!": "CHE SCAMBIO!",
+  "PUNKT!": "PUNTO!",
+  "Soundeffekte": "Effetti sonori"
 };
 
 </script>
@@ -2054,7 +2074,12 @@ I18N.pt = {
   "Bild teilen": "Compartilhar imagem",
   "Text kopieren": "Copiar texto",
   "Morgen gibt es neue Karten.": "Amanhã tem cartas novas.",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Aqui não dá para compartilhar direto. Segure a imagem para salvar, ou tire um print."
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "Aqui não dá para compartilhar direto. Segure a imagem para salvar, ou tire um print.",
+  "ASS!": "ACE!",
+  "BLOCK!": "BLOQUEIO!",
+  "WAS FÜR EIN BALLWECHSEL!": "QUE RALI!",
+  "PUNKT!": "PONTO!",
+  "Soundeffekte": "Efeitos sonoros"
 };
 
 </script>
@@ -2438,7 +2463,12 @@ I18N.zh = {
   "Bild teilen": "分享图片",
   "Text kopieren": "复制文字",
   "Morgen gibt es neue Karten.": "明天有新卡牌。",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "这里无法直接分享。长按图片保存，或者截图。"
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "这里无法直接分享。长按图片保存，或者截图。",
+  "ASS!": "发球得分！",
+  "BLOCK!": "拦网！",
+  "WAS FÜR EIN BALLWECHSEL!": "精彩的多回合！",
+  "PUNKT!": "得分！",
+  "Soundeffekte": "音效"
 };
 
 </script>
@@ -2822,7 +2852,12 @@ I18N.ja = {
   "Bild teilen": "画像をシェア",
   "Text kopieren": "テキストをコピー",
   "Morgen gibt es neue Karten.": "明日は新しいカードです。",
-  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "ここでは直接シェアできません。画像を長押しして保存するか、スクリーンショットを撮ってください。"
+  "Teilen geht hier nicht direkt. Halte das Bild gedrückt, um es zu sichern, oder mach einen Screenshot.": "ここでは直接シェアできません。画像を長押しして保存するか、スクリーンショットを撮ってください。",
+  "ASS!": "エース！",
+  "BLOCK!": "ブロック！",
+  "WAS FÜR EIN BALLWECHSEL!": "すごいラリー！",
+  "PUNKT!": "ポイント！",
+  "Soundeffekte": "効果音"
 };
 
 </script>
@@ -4195,33 +4230,35 @@ const Music = (() => {
   const hz = m => 440 * Math.pow(2, (m - 69) / 12);
   let ctx = null, master = null, noise = null, timer = null, step = 0, nextT = 0;
   let on = true, vol = .2, started = false, audio = null, track = 0;
+  let sfxOn = true, sfxBus = null; // Soundeffekte: eigener Ausgang, hängt an der Lautstärke, aber nicht am Musik-Schalter
 
   const gainNow = () => (on ? vol * .5 : 0);
   function applyGain() {
     if (master && ctx) master.gain.setTargetAtTime(gainNow(), ctx.currentTime, .05);
+    if (sfxBus && ctx) sfxBus.gain.setTargetAtTime(sfxOn ? Math.min(1, vol * 1.6) : 0, ctx.currentTime, .05);
     if (audio) { audio.volume = Math.min(1, vol * .7); audio.muted = !on; }
   }
 
-  function tone(m, t, d, type, g, cutoff) {
+  function tone(m, t, d, type, g, cutoff, dest = master) {
     const o = ctx.createOscillator(), f = ctx.createBiquadFilter(), a = ctx.createGain();
     o.type = type; o.frequency.value = hz(m);
     f.type = 'lowpass'; f.frequency.value = cutoff;
     a.gain.setValueAtTime(0, t); a.gain.linearRampToValueAtTime(g, t + .008);
     a.gain.exponentialRampToValueAtTime(g * .55, t + Math.min(d, .25)); a.gain.linearRampToValueAtTime(0, t + d);
-    o.connect(f); f.connect(a); a.connect(master);
+    o.connect(f); f.connect(a); a.connect(dest);
     o.start(t); o.stop(t + d + .02);
   }
-  function kick(t) {
+  function kick(t, dest = master) {
     const o = ctx.createOscillator(), a = ctx.createGain();
     o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(45, t + .12);
     a.gain.setValueAtTime(.5, t); a.gain.exponentialRampToValueAtTime(.001, t + .18);
-    o.connect(a); a.connect(master); o.start(t); o.stop(t + .2);
+    o.connect(a); a.connect(dest); o.start(t); o.stop(t + .2);
   }
-  function burst(t, d, g, hp) {
+  function burst(t, d, g, hp, dest = master) {
     const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), a = ctx.createGain();
     s.buffer = noise; f.type = 'highpass'; f.frequency.value = hp;
     a.gain.setValueAtTime(g, t); a.gain.exponentialRampToValueAtTime(.001, t + d);
-    s.connect(f); f.connect(a); a.connect(master); s.start(t); s.stop(t + d + .02);
+    s.connect(f); f.connect(a); a.connect(dest); s.start(t); s.stop(t + d + .02);
   }
 
   function scheduleStep(i, t) {
@@ -4251,6 +4288,7 @@ const Music = (() => {
     if (!AC) return;
     ctx = new AC();
     master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+    sfxBus = ctx.createGain(); sfxBus.gain.value = 0; sfxBus.connect(ctx.destination);
     noise = ctx.createBuffer(1, ctx.sampleRate * .5, ctx.sampleRate);
     const d = noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     nextT = ctx.currentTime + .1; step = 0;
@@ -4258,6 +4296,24 @@ const Music = (() => {
     applyGain();
     document.addEventListener('visibilitychange', () => { if (!ctx) return; document.hidden ? ctx.suspend() : ctx.resume(); });
   }
+  // Soundeffekte, alle im Code erzeugt (keine Dateien, keine Lizenzfragen). t = Startzeit, B = Ausgang
+  const seq = (notes, gap, d, type, g, cut, t, B) => notes.forEach((n, i) => tone(n, t + i * gap, i === notes.length - 1 ? d * 2.5 : d, type, g, cut, B));
+  const FX = {
+    tickA: (t, B) => tone(84, t, .05, 'triangle', .09, 4000, B),                    // eigener Punkt im Schnelldurchlauf
+    tickB: (t, B) => tone(60, t, .05, 'triangle', .07, 1500, B),                    // Punkt des Gegners
+    point: (t, B) => seq([72, 79], .07, .1, 'square', .1, 3000, t, B),
+    lost: (t, B) => seq([58, 53], .1, .13, 'sawtooth', .1, 900, t, B),
+    ace: (t, B) => seq([72, 76, 79, 84], .06, .1, 'square', .11, 4000, t, B),
+    block: (t, B) => { kick(t, B); burst(t, .12, .35, 800, B); tone(48, t + .02, .2, 'square', .12, 700, B); },
+    rally: (t, B) => seq([67, 72, 76, 79, 84], .05, .1, 'triangle', .12, 5000, t, B),
+    setwin: (t, B) => seq([72, 76, 79, 84], .12, .16, 'square', .13, 3500, t, B),
+    setlost: (t, B) => seq([67, 63, 60], .15, .2, 'sawtooth', .1, 900, t, B),
+    win: (t, B) => [72, 72, 72, 76, 79, 84].forEach((n, i) => tone(n, t + [0, .12, .24, .36, .5, .66][i], i === 5 ? .8 : .14, 'square', .14, 3500, B)),
+    pick: (t, B) => { tone(76, t, .06, 'triangle', .14, 5000, B); burst(t, .03, .12, 5000, B); },
+    tap: (t, B) => tone(69, t, .05, 'triangle', .1, 4000, B),
+    crate: (t, B) => { burst(t, .35, .25, 2500, B); seq([79, 84, 88, 91], .05, .1, 'triangle', .1, 6000, t + .2, B); },
+  };
+
   function startFiles() {
     audio = new Audio(MUSIC_TRACKS[0]); audio.loop = MUSIC_TRACKS.length === 1;
     audio.addEventListener('ended', () => { track = (track + 1) % MUSIC_TRACKS.length; audio.src = MUSIC_TRACKS[track]; audio.play().catch(() => {}); });
@@ -4266,13 +4322,15 @@ const Music = (() => {
 
   return {
     // Einstellungen übernehmen (an/aus, Lautstärke 0–1)
-    set(opts) { if (opts.music != null) on = !!opts.music; if (opts.vol != null) vol = Math.max(0, Math.min(1, opts.vol)); applyGain(); if (started && ctx && ctx.state === 'suspended' && on && !document.hidden) ctx.resume(); },
+    set(opts) { if (opts.sfx != null) sfxOn = !!opts.sfx; if (opts.music != null) on = !!opts.music; if (opts.vol != null) vol = Math.max(0, Math.min(1, opts.vol)); applyGain(); if (started && ctx && ctx.state === 'suspended' && on && !document.hidden) ctx.resume(); },
     // Muss durch eine Nutzeraktion ausgelöst werden (Browser-Vorgabe). Danach läuft die Musik von selbst.
     start() {
       if (started) { if (ctx && ctx.state === 'suspended' && !document.hidden) ctx.resume(); if (audio && on) audio.play().catch(() => {}); return; }
       started = true;
       try { MUSIC_TRACKS.length ? startFiles() : startSynth(); } catch (e) { started = false; }
     },
+    // Soundeffekt abspielen (still, solange der Ton noch nicht gestartet ist)
+    fx(name) { if (!ctx || !sfxBus || !sfxOn || ctx.state !== 'running' || !FX[name]) return; try { FX[name](ctx.currentTime + .01, sfxBus); } catch (e) {} },
     state() { return { started, on, vol, ctx: ctx ? ctx.state : (audio ? 'audio' : 'none'), master: master ? +master.gain.value.toFixed(3) : null }; },
   };
 })();
@@ -4728,7 +4786,7 @@ function rMatch() {
       <div class="pts" id="pa">0</div><div class="cond" style="font-size:40px;color:var(--mute)">:</div><div class="pts" id="pb">0</div>
     </div>
     <div class="sets" id="sets"></div>
-    <div class="mcourt" id="mcourt"></div>
+    <div class="hl" id="hl" hidden></div>
     <div id="fbox"></div>
     <div class="controls" id="mctl"><button class="btn ghost" data-act="speed" id="speedbtn">${speedText(M ? M.speed : 0)}</button><button class="btn ghost" data-act="skip">${T('Überspringen')}</button></div>
     <div class="log" id="log"></div>
@@ -4757,68 +4815,101 @@ function startMatch() {
 }
 
 const setsHTML = sets => sets.map((s, i) => `<span>${T('Satz {n}', { n: i + 1 })}: ${s[0]}:${s[1]}</span>`).join('');
-function showFrame(f) {
+const sfx = n => { try { Music.fx(n); } catch (e) {} };
+const escH = x => String(x).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+
+// ---- Match als Höhepunkte ----
+// Der Punktestand läuft schnell durch. Nur bei den wichtigsten Momenten eines Satzes hält das Spiel an
+// und zeigt die Karte des Spielers gross (Ass, Block, langer Ballwechsel, Punkte in der engen Schlussphase).
+// Vorab berechnete Spiele ohne Ablaufdaten (Zero to Hero) laufen wie früher Ballwechsel für Ballwechsel.
+const HL_MAX = 6;                                             // Höhepunkte pro Satz
+const HL_MS = [2600, 1500], TICK_MS = [200, 100, 25], SETEND_MS = [2200, 1500, 500]; // je Tempo langsam, normal, schnell
+function rallyKind(f) {
+  const tr = f.tr || [], last = tr[tr.length - 1];
+  if (!last) return null;
+  if (tr.length > 1 && tr[1].q === 'ace') return { kind: 'ace', who: tr[0] };
+  if (last.k === 'blk') return { kind: 'blk', who: last };
+  const att = [...tr].reverse().find(x => x.k === 'att');
+  if (att && att.s === f.w) return { kind: tr.filter(x => x.k === 'dig').length >= 2 ? 'long' : 'kill', who: att };
+  return null; // Fehler (Aufschlag, Angriff, Zuspiel) sind kein Höhepunkt
+}
+// fr = alle Ballwechsel eines Satzes. Liefert die Stellen der Höhepunkte.
+function pickHighlights(fr) {
+  const target = fr.length && fr[0].set === 2 ? 15 : 25, cand = [];
+  let run = 0, lw = -1;
+  fr.forEach((f, i) => {
+    run = f.w === lw ? run + 1 : 1; lw = f.w;
+    const k = rallyKind(f); if (!k) return;
+    const hi = Math.max(f.sc[0], f.sc[1]), close = Math.abs(f.sc[0] - f.sc[1]) <= 2;
+    let v = { ace: 3, blk: 3, long: 3, kill: 1 }[k.kind];
+    if (hi >= target - 2 && close) v += 3;               // enge Schlussphase
+    if (i === fr.length - 1) v += 4;                     // der Punkt zum Satzgewinn
+    if (run >= 3) v += 1;                                // Serie
+    if (f.w === 0) v += .5;                              // eigene Punkte leicht bevorzugt
+    cand.push({ i, v, mine: f.w === 0 });
+  });
+  // Bis zu zwei Plätze sind für den Gegner reserviert, damit ein Satz nicht nur aus eigenen Aktionen besteht
+  cand.sort((x, y) => y.v - x.v || x.i - y.i);
+  const opp = cand.filter(x => !x.mine).slice(0, 2), rest = cand.filter(x => !opp.includes(x));
+  return new Set(opp.concat(rest.slice(0, HL_MAX - opp.length)).map(x => x.i));
+}
+function showHL(f, k) {
+  const el = document.getElementById('hl'); if (!el) return;
+  const mine = k.who.s === 0, p = (mine ? G.lineup : M.opp.lineup).find(x => x.name === k.who.n);
+  const word = { ace: T('ASS!'), blk: T('BLOCK!'), long: T('WAS FÜR EIN BALLWECHSEL!'), kill: T('PUNKT!') }[k.kind];
+  el.hidden = false; el.className = 'hl show ' + (mine ? 'a' : 'b');
+  el.innerHTML = `${p ? cardHTML(p) : ''}<div class="hw"><b${word.length > 10 ? ' class="sm"' : ''}>${word}</b><span>${escH(f.text)}</span><i>${f.sc[0]}:${f.sc[1]}</i></div>`;
+  sfx(mine ? { ace: 'ace', blk: 'block', long: 'rally', kill: 'point' }[k.kind] : 'lost');
+}
+
+// Zeigt einen Ballwechsel oder ein Satzende. Rückgabe: true bei einem Höhepunkt. quiet = ohne Ton und Karte (beim Überspringen)
+function showFrame(f, quiet) {
   const pa = document.getElementById('pa'), pb = document.getElementById('pb');
-  if (!pa) return;
+  if (!pa) return false;
   pa.textContent = f.sc[0]; pb.textContent = f.sc[1];
-  const hit = f.w === 0 ? pa : pb;
+  const hit = f.w === 0 ? pa : pb, live = !!f.tr;
   if (f.kind === 'rally') { hit.classList.remove('hit'); void hit.offsetWidth; hit.classList.add('hit'); }
   document.getElementById('setno').textContent = (f.kind === 'setend' ? T('Satz {n} beendet', { n: f.set + 1 }) : T('Satz {n}', { n: f.set + 1 })) + (M.focus ? ' · ' + FOCUS_UI.find(x => x.k === M.focus).ic : '');
-  if (f.kind === 'rally') animRally(f);
   if (f.kind === 'setend') M.setWins.push(f.sc);
   document.getElementById('sets').innerHTML = setsHTML(M.setWins);
-  const log = document.getElementById('log'), d = document.createElement('div');
-  d.className = f.kind === 'setend' ? 'end' : f.w === 0 ? 'a' : 'b';
-  d.textContent = f.kind === 'rally' ? `${f.sc[0]}:${f.sc[1]}  ${f.text}` : f.text;
-  log.prepend(d);
-  while (log.children.length > 7) log.lastChild.remove();
+  let k = null;
+  if (f.kind === 'rally' && live && !quiet) {
+    if (M.hlSet !== f.set) {
+      M.hlSet = f.set;
+      const idx = []; M.res.frames.forEach((x, j) => { if (x.kind === 'rally' && x.set === f.set) idx.push(j); });
+      M.hl = new Set([...pickHighlights(idx.map(j => M.res.frames[j]))].map(n => idx[n]));
+    }
+    if (M.speed < 2 && M.hl.has(M.i - 1)) k = rallyKind(f);
+    if (k) showHL(f, k);
+    else { const el = document.getElementById('hl'); if (el) el.classList.remove('show'); if (M.speed < 2) sfx(f.w === 0 ? 'tickA' : 'tickB'); }
+  }
+  if (f.kind === 'setend' && !quiet) sfx(f.w === 0 ? 'setwin' : 'setlost');
+  if (!live || k || f.kind === 'setend') {
+    const log = document.getElementById('log'), d = document.createElement('div');
+    d.className = f.kind === 'setend' ? 'end' : f.w === 0 ? 'a' : 'b';
+    d.textContent = f.kind === 'rally' ? `${f.sc[0]}:${f.sc[1]}  ${f.text}` : f.text;
+    log.prepend(d);
+    while (log.children.length > 7) log.lastChild.remove();
+  }
+  return !!k;
 }
 
 function tick() {
   if (!M || M.done) return;
   if (M.i >= M.res.frames.length) return M.res.live && !M.res.done ? askFocus() : finishMatch();
-  const f = M.res.frames[M.i++];
-  showFrame(f);
-  M.timer = setTimeout(tick, f.kind === 'setend' ? 2200 : M.delay);
+  const f = M.res.frames[M.i++], hl = showFrame(f), sp = M.speed || 0;
+  M.timer = setTimeout(tick, f.kind === 'setend' ? SETEND_MS[sp] : !f.tr ? M.delay : hl ? HL_MS[sp] : TICK_MS[sp]);
 }
 
 function skip() {
   if (!M || M.done) return;
   const fr = M.res.frames;
   if (M.i >= fr.length) return; // wartet auf die Satz-Taktik
-  clearTimeout(M.timer); clearTimeout(M.bt);
+  clearTimeout(M.timer);
   M.i = fr.length; M.setWins = M.res.sets.slice(0, -1);
-  showFrame(fr[fr.length - 1]);
+  showFrame(fr[fr.length - 1], true);
   if (M.res.live && !M.res.done) return askFocus();
   finishMatch();
-}
-
-// ---- Spielfeld im Match: Aufstellung beider Teams und Weg des Balls ----
-const escH = x => String(x).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
-// pre[s] = sechs Spieler nach Feldposition 1 bis 6. Unten das eigene Team (Vorderreihe 4-3-2 am Netz), oben der Gegner gespiegelt.
-function courtHTML(pre) {
-  const cell = (s, cp) => { const e = pre[s][cp - 1]; return `<div class="mc${e.lib ? ' lib' : ''}${e.s ? ' srv' : ''}" data-s="${s}" data-n="${escH(e.n)}">${escH(e.n)}</div>`; };
-  return `<div class="mhalf opp">${[1, 6, 5, 2, 3, 4].map(cp => cell(1, cp)).join('')}</div><div class="mnet"></div><div class="mhalf">${[4, 3, 2, 5, 6, 1].map(cp => cell(0, cp)).join('')}</div><i class="mball" id="mball"></i>`;
-}
-function animRally(f) {
-  clearTimeout(M.bt);
-  const court = document.getElementById('mcourt');
-  if (!court || !f.pre) return;
-  court.className = 'mcourt';
-  court.innerHTML = courtHTML(f.pre);
-  const ball = document.getElementById('mball'), cells = [...court.querySelectorAll('.mc')];
-  const steps = (f.tr || []).map(x => cells.find(c => +c.dataset.s === x.s && c.dataset.n === x.n)).filter(Boolean);
-  const won = () => court.classList.add(f.w === 0 ? 'wa' : 'wb');
-  if (M.delay < 300 || !steps.length) { ball.style.display = 'none'; return won(); }
-  const stepMs = Math.min(260, (M.delay - 150) / (steps.length + 1));
-  let k = 0;
-  const move = () => {
-    const c = steps[k];
-    cells.forEach(x => x.classList.remove('on')); c.classList.add('on');
-    ball.style.left = c.offsetLeft + c.offsetWidth / 2 + 'px'; ball.style.top = c.offsetTop + 'px';
-    M.bt = setTimeout(++k < steps.length ? move : won, stepMs);
-  };
-  move();
 }
 
 // ---- Satz-Taktik: vor jedem Satz eine von drei, jede mit Vorteil und Nachteil (Werte in engine.js, FOCUS) ----
@@ -4840,7 +4931,7 @@ function askFocus() {
     <p class="fhint">${T('Je besser dein Wert gegen den des Gegners, desto mehr bringt die Taktik.')}</p>
     <div class="fbtns">${FOCUS_UI.map(btn).join('')}</div></div>`;
   if (ctl) ctl.style.display = 'none';
-  document.getElementById('mcourt').style.display = 'none'; // Platz für die Auswahl, das Feld kommt mit dem Satz zurück
+  const hl = document.getElementById('hl'); if (hl) { hl.hidden = true; hl.innerHTML = ''; } // Platz für die Auswahl
 }
 function setFocus(f) {
   if (!M || M.done || !M.res.live || M.res.done || M.i < M.res.frames.length || !FOCUS[f]) return;
@@ -4848,17 +4939,18 @@ function setFocus(f) {
   M.focus = f; saveRun();
   document.getElementById('fbox').innerHTML = '';
   const ctl = document.getElementById('mctl'); if (ctl) ctl.style.display = '';
-  document.getElementById('mcourt').style.display = '';
+  sfx('tap');
   tick();
 }
 
 const coinLine = (coins, win) => `<div class="reward">🪙 ${T('+{n} Münzen', { n: coins })}${win ? '' : ' ' + T('(Trost)')}</div>`;
 const packsBtn = () => `<button class="btn ghost" data-go="packs">${T('Kisten öffnen')} (${P.packs.basic + P.packs.final})</button>`;
 function finishMatch() {
-  clearTimeout(M.timer); clearTimeout(M.bt);
+  clearTimeout(M.timer);
   if (M.done) return;
   M.done = true;
   const { res } = M, win = res.winner === 0, rogue = G.mode === 'rogue';
+  sfx(win ? 'win' : 'lost');
   document.getElementById('sets').innerHTML = setsHTML(res.sets);
   const score = `${res.won[0]}:${res.won[1]}`, sub = (t, m = 6) => `<p style="color:var(--mute);margin:8px 0 ${m}px">${t}</p>`;
   const coins = prizeFor(win); P.money += coins;
@@ -5014,6 +5106,7 @@ function openPack(type, n = 1) {
   save();
   O = { type, cards, isNew, isDup, flipped: cards.map(() => false), stage: 'intro' };
   V = 'open'; render();
+  sfx('crate');
 }
 
 // Farbenfolge als Teaser: grau → türkis → rot → regenbogen (Legende), bei der geheimen Karte am Ende schwarz, bei Event-Karten orange
@@ -5397,7 +5490,7 @@ document.addEventListener('click', e => {
     const p0 = G.pack[i], base = G.mode === 'rogue' ? runPlayer(p0, levelOf(p0.id)) : p0;
     const idx = chooseSlot(G.slots, base);
     if (!fitsRole(base, SLOT_POS[idx]) && WARN !== i) { WARN = i; return render(); }
-    WARN = null;
+    WARN = null; sfx('pick');
     G.slots[idx] = fitTo(base, idx); syncLineup(); G.used.add(p0.id);
     G.pack = G.lineup.length < TEAM_SIZE ? nextPack() : null;
     return render();
@@ -5483,14 +5576,17 @@ document.addEventListener('click', e => {
 function syncSettings() {
   const mus = document.getElementById('mus'), vol = document.getElementById('vol'), volv = document.getElementById('volv');
   mus.checked = P.settings.music; vol.value = P.settings.vol; volv.textContent = P.settings.vol + ' %';
-  Music.set({ music: P.settings.music, vol: P.settings.vol / 100 });
+  const fxOn = P.settings.sfx !== false, fx = document.getElementById('sfx'); if (fx) fx.checked = fxOn;
+  Music.set({ music: P.settings.music, sfx: fxOn, vol: P.settings.vol / 100 });
 }
 (function () {
   const mus = document.getElementById('mus'), vol = document.getElementById('vol'), volv = document.getElementById('volv');
   syncSettings();
   // Browser erlauben Ton erst nach einer Nutzeraktion: die erste Berührung startet die Musik
-  ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (P.settings.music) Music.start(); }, { passive: true }));
+  ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, () => { if (P.settings.music || P.settings.sfx !== false) Music.start(); }, { passive: true }));
   vol.addEventListener('input', () => { P.settings.vol = +vol.value; volv.textContent = vol.value + ' %'; Music.set({ vol: P.settings.vol / 100 }); save(); });
+  const fx = document.getElementById('sfx');
+  if (fx) fx.addEventListener('change', () => { P.settings.sfx = fx.checked; Music.set({ sfx: fx.checked }); if (fx.checked) { Music.start(); setTimeout(() => sfx('point'), 150); } save(); });
   mus.addEventListener('change', () => { P.settings.music = mus.checked; Music.set({ music: mus.checked }); if (mus.checked) Music.start(); save(); });
 })();
 restoreRun();
